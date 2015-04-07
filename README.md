@@ -20,7 +20,7 @@ The producer and consumer code uses SqlServer as the transport for the messagebu
 ###Bus setup example of producer code
 
 ```csharp
-IBus bus = Configure.With(new AutofacServiceLocatorContainerAdapter(container))                    
+IBus bus = Configure.With(new AutofacServiceLocatorContainerAdapter(container))
           .Logging(l => l.Log4Net())
           .MessageOwnership(o => o.FromRebusConfigurationSection())
           .Transport(
@@ -31,7 +31,7 @@ IBus bus = Configure.With(new AutofacServiceLocatorContainerAdapter(container))
                       .EnsureTableIsCreated();
 
                   t.UseDataBus().EnableChecksums().UseServiceLocator();
-              })                                        
+              })
           .CreateBus()
           .Start();
 ```
