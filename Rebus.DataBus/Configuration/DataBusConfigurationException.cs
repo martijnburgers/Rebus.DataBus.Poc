@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Rebus.DataBus.Configuration
 {
-    public class DataBusConfigurationException : Exception
+    public class DataBusConfigurationException : DataBusException
     {
         public DataBusConfigurationException()
         {
