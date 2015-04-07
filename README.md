@@ -1,11 +1,56 @@
-## Scaleout with SQL Server
+## Proof Of Concept DataBus implementation for Rebus
 
-The purpose of this sample is to demonstrate how Rebus can easily distribute work when using SQL Server as the transport layer.
+Not used or tested this in production. Spend roughly two days on it.
 
-In order to run the sample, you need to have access to a SQL Server, which is assumed to be running locally as the default instance, containing a database called 'rebus_test'. A table, 'RebusMessages', will automatically be created in the database.
+Features:
 
-Naturally, you're free to edit the connection string in both the producer and the consumer.
+- Databus properties ala NServicebus.
+- Databus transport implemented as a file share, with the possiblity of writing your own `IDataBus`.
+- Default .Net binary serializer (implement your own `IDataBusSerializer` if you want).
+- Possibilty to write custom databus property offloaders (`IDataBusPropertyOffloader`) and loaders (`IDataBusPropertyLoader`). Offloaders are used on the sender's side and loaders are used on the receiver's side.
+- SHA256 Checksumming on databus properties.
+- GZIP compression on databus properties.
+- The construction of needed databus types can either be specified by hand or with a DI container (using the service locator pattern for this - I saw no other way for this).
+    -   Autofac example included.
+- Configure transaction scopes arround reading and writing from the databus. Defaults to TransactionScopeOption.Suppress.
+- Logging
 
-The sample can be run by starting the producer and any number of consumers. Then you'll see how jobs published by the producer will be distributed to all the consumers.
+The producer and consumer code uses SqlServer as the transport for the messagebus.
 
-Please note that since the SQL Server transport is based on polling the message table, it will back off its polling when no messages are found. Therefore, when sending a small batch of messages when the consumers are idle, some consumers might miss the fact that messages were available, which may seem like the consumers aren't properly competing.
+###Bus setup example of producer code
+
+```csharp
+IBus bus = Configure.With(new AutofacServiceLocatorContainerAdapter(container))                    
+          .Logging(l => l.Log4Net())
+          .MessageOwnership(o => o.FromRebusConfigurationSection())
+          .Transport(
+              t =>
+              {
+                  t.UseSqlServerInOneWayClientMode(
+                      "server=.;initial catalog=rebus_test;integrated security=true")
+                      .EnsureTableIsCreated();
+
+                  t.UseDataBus().EnableChecksums().UseServiceLocator();
+              })                                        
+          .CreateBus()
+          .Start();
+```
+###Bus setup example of consumer code
+```csharp
+
+  IBus bus = Configure.With(new AutofacServiceLocatorContainerAdapter(container))
+            .Logging(l => l.Log4Net())
+            .Transport(
+                t =>
+                {
+                    t.UseSqlServer(
+                        "server=.;initial catalog=rebus_test;integrated security=true",
+                        "consumer",
+                        "error").EnsureTableIsCreated();
+  
+                    t.UseDataBus().EnableChecksums().UseServiceLocator();
+                })                                
+            .Behavior(behavior => behavior.SetMaxRetriesFor<Exception>(0))
+            .CreateBus()
+            .Start(20);
+```
