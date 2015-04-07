@@ -14,8 +14,9 @@ Features:
     -   Autofac example included.
 - Configure transaction scopes arround reading and writing from the databus. Defaults to TransactionScopeOption.Suppress.
 - Logging
+- Created without modifications to the Rebus source code.
 
-The producer and consumer code uses SqlServer as the transport for the messagebus.
+The producer and consumer code uses SqlServer as the transport for the messagebus. Should work with other transports as well but that's not tested.
 
 ###Bus setup example of producer code
 

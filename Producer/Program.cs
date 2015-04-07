@@ -56,7 +56,7 @@ namespace Producer
                     .CreateBus()
                     .Start();
 
-            //some test code, sharing a transaction a cross multiple threads.
+            //some test code, sharing a transaction across multiple threads.
 
             //using (TransactionScope scope = new TransactionScope())
             //{
