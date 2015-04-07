@@ -10,7 +10,7 @@ Features:
 - Possibilty to write custom databus property offloaders (`IDataBusPropertyOffloader`) and loaders (`IDataBusPropertyLoader`). Offloaders are used on the sender's side and loaders are used on the receiver's side.
 - SHA256 Checksumming on databus properties.
 - GZIP compression on databus properties.
-- The construction of needed databus types can either be specified by hand or with a DI container (using the service locator pattern for this - I saw no other way for this).
+- The construction of needed databus types can either be specified by hand or with a DI container (using the service locator pattern for this - I saw no other way).
     -   Autofac example included.
 - Configure transaction scopes arround reading and writing from the databus. Defaults to TransactionScopeOption.Suppress.
 - Logging
