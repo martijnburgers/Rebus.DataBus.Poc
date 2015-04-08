@@ -6,6 +6,7 @@ Features:
 
 - Databus properties ala NServicebus.
 - Databus transport implemented as a file share, with the possiblity of writing your own `IDataBus`.
+    - Leaves a copy on the databus.
 - Default .Net binary serializer (implement your own `IDataBusSerializer` if you want).
 - Possibilty to write custom databus property offloaders (`IDataBusPropertyOffloader`) and loaders (`IDataBusPropertyLoader`). Offloaders are used on the sender's side and loaders are used on the receiver's side.
 - SHA256 Checksumming on databus properties.
