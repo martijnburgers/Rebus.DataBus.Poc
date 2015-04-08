@@ -214,12 +214,12 @@ namespace Rebus.DataBus.Configuration
 
         private void ApplyRecoredSettings()
         {
-            do
-            {
-                Action<IDataBusSettings> apply = _settingsRecorderQueue.Dequeue();
+            Action<IDataBusSettings> apply = _settingsRecorderQueue.Dequeue();
 
+            while (_settingsRecorderQueue.Count != 0)
+            {
                 apply(DataBusSettings);
-            } while (_settingsRecorderQueue.Count != 0);
+            }
 
             if (_settingsRecorderQueue.Count != 0)
                 ApplyRecoredSettings();
