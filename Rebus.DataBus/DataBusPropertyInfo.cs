@@ -4,20 +4,18 @@ namespace Rebus.DataBus
 {
     public class DataBusPropertyInfo
     {  
-        public DataBusPropertyInfo(string name, bool isCompressedProperty, Func<object, object> getPropertyInstance, Action<object, object> setPropertyInstance)
+        public DataBusPropertyInfo(string name, bool isCompressedProperty, Func<object, object> getPropertyInstance)
         {
             if (name == null) throw new ArgumentNullException("name");
             if (getPropertyInstance == null) throw new ArgumentNullException("getPropertyInstance");
-            if (setPropertyInstance == null) throw new ArgumentNullException("setPropertyInstance");
+            
             Name = name;
             IsCompressedProperty = isCompressedProperty;
-            GetPropertyInstance = getPropertyInstance;
-            SetPropertyInstance = setPropertyInstance;
+            GetPropertyInstance = getPropertyInstance;            
         }
 
         public string Name { get; private set; }
         public bool IsCompressedProperty { get; set; }
-        public Func<object, object> GetPropertyInstance { get; private set; }
-        public Action<object, object> SetPropertyInstance { get; private set; }        
+        public Func<object, object> GetPropertyInstance { get; private set; }        
     }
 }

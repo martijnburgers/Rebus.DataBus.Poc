@@ -65,8 +65,7 @@ namespace Rebus.DataBus.Util.Reflection
             return new DataBusPropertyInfo(
                 propertyInfo.Name,
                 propertyInfo.IsDataBusCompressedProperty(),
-                propertyInfo.GenerateGetterFunc(),
-                propertyInfo.GenerateSetterAction());
+                propertyInfo.GenerateGetterFunc());
         }
     }
 }
